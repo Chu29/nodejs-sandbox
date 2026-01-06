@@ -1,0 +1,21 @@
+{
+  "name": "pckt",
+  "version": "1.0.0",
+  "description": "My first custom package",
+  "license": "ISC",
+  "author": "ChuA",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "standard",
+    "lint-fix": "standard --fix",
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "standard": "^17.1.2"
+  },
+  "dependencies": {
+    "pino": "^10.1.0"
+  }
+}
