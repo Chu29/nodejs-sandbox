@@ -43,8 +43,7 @@ const server = http.createServer((req, res) => {
   if (pathname === "/") {
     res.end(root);
     return;
-  }    res.end(root);
-
+  }
 
   if (pathname === "/hello") {
     res.end(hello);
