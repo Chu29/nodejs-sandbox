@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 //register the routes
 app.use("/", indexRouter);
-app.use("/bicycle", bicycleRouter);
+app.use("/bicycles", bicycleRouter);
 
 // check if the request is a GET request
 app.use((req, res, next) => {
