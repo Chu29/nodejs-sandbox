@@ -1,6 +1,6 @@
 "use strict";
 import http from "node:http";
-import { url } from "node:url";
+import url from "node:url";
 const brands = ["Gazelle", "Batavus", "Azor", "Cortina", "Giant", "Sparta"];
 const MISSING = 3;
 
@@ -18,10 +18,11 @@ const server = http.createServer((req, res) => {
   if (id === MISSING) {
     res.statusCode = 404;
     return void res.end();
+    
   }
 
   res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify({ id, brand: brands[id % brands.length] }));
+  res.end(JSON.stringify({ id, name: brands[id % brands.length] }));
 });
 
 // listen to the server
