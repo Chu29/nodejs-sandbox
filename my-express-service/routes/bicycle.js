@@ -1,18 +1,24 @@
-"use strict";
+import express from "express";
 
-var express = require("express");
-var router = express.Router();
-var model = require("../model");
+import { validateContentType } from "../middleware/validateContentType.js";
+import {
+  createNewBicycle,
+  getBicycleByID,
+  getBicycles,
+} from "../services/api.service.js";
 
-router.get("/:id", (req, res, next) => {
-  model.bicycle.read(req.params.id, (err, result) => {
-    if (err) {
-      if (err.message === "not found") next();
-      else next(err);
-    } else {
-      res.send(result);
-    }
-  });
-});
+const router = express.Router();
 
-module.exports = router;
+// register the validation middleware to validate Content-Type
+router.use(validateContentType);
+
+/* GET all bicycles */
+router.get("/", getBicycles);
+
+// Get bicycle by id
+router.get("/:id", getBicycleByID);
+
+// Create a new bicycle
+router.post("/", createNewBicycle);
+
+export default router;
