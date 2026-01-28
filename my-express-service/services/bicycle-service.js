@@ -1,13 +1,13 @@
 "use strict";
 import http from "node:http";
-import { url } from "node:inspector";
+import url from "node:url";
 const colors = ["Yellow", "Red", "Orange", "Green", "Blue", "Indigo"];
 const MISSING = 2;
 
 const server = http.createServer((req, res) => {
   const { pathname } = url.parse(req.url);
 
-  let id = pathname.match(/^\(\d+)$/);
+  let id = pathname.match(/^\/(\d+)$/);
   if (!id) {
     res.statusCode = 400;
     return void res.end();

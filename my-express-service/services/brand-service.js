@@ -1,12 +1,12 @@
 "use strict";
 import http from "node:http";
-import { url } from "node:inspector";
+import { url } from "node:url";
 const brands = ["Gazelle", "Batavus", "Azor", "Cortina", "Giant", "Sparta"];
 const MISSING = 3;
 
 const server = http.createServer((req, res) => {
   const { pathname } = url.parse(req.url);
-  let id = pathname.match(/^\(\d+)$/);
+  let id = pathname.match(/^\/(\d+)$/);
 
   if (!id) {
     res.statusCode = 400;
