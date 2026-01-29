@@ -10,3 +10,5 @@ const validateColorData = (data, isPartial = false) => {
 
   return errors;
 };
+
+export default validateColorData;
