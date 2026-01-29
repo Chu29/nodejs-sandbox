@@ -83,8 +83,45 @@ export const createColor = async (req, res, next) => {
       },
     };
 
+    res.location(`/colors/${newColor.id}`);
     res.status(201).json(colorWithLinks);
   } catch (error) {
     next(error);
   }
+};
+
+/** UPDATE COLOR */
+export const updateColor = async (req, res, next) => {
+  const id = req.params.id;
+  const { color } = req.body;
+  const errors = validateColorData({ color });
+
+  if (errors.length > 0) return res.status(400).json({ errors });
+
+  try {
+    const query = db.prepare("UPDATE colors SET color = ? WHERE id = ?");
+    const result = query.run(color.trim(), id);
+
+    if (result.changes === 0) {
+      let error = new Error(STATUS_CODES[404].message);
+      error.status = 404;
+      throw error;
+    }
+
+    // get the updated color
+    const updatedColor = db
+      .prepare("SELECT * FROM colors WHERE id = ?")
+      .get(id);
+
+    // Add HATEOS Links
+    const colorWithLinks = {
+      ...updatedColor,
+      _links: {
+        self: { href: `/colors/${updatedColor.id}` },
+        collection: { href: "/colors" },
+      },
+    };
+
+    res.send(colorWithLinks);
+  } catch (error) {}
 };
