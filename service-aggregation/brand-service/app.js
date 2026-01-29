@@ -21,9 +21,10 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  const status = err.status || 500;
-  res.status(status);
+  const statusCode = err.status || 500;
+  res.status(statusCode);
   res.json({
+    status: statusCode,
     message: err.message,
     error: req.app.get("env") === "development" ? err : {},
   });
