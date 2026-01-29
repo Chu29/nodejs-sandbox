@@ -1,5 +1,6 @@
 import db from "../config/db.js";
 import { STATUS_CODES } from "node:http";
+import validateColorData from "../helpers/validateColorData.js";
 
 /** GET ALL COLORS */
 export const getColors = async (req, res, next) => {
@@ -54,6 +55,35 @@ export const getColorById = async (req, res, next) => {
 
     // return the final data
     res.json(color);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/** CREATE NEW COLOR */
+export const createColor = async (req, res, next) => {
+  const { color } = req.body;
+  const errors = validateColorData({ color });
+  if (errors.length > 0) return res.status(400).json({ errors });
+
+  try {
+    const query = db.prepare("INSERT INTO colors (color) VALUES (?)");
+    const result = query.run(color.trim());
+
+    const newColor = db
+      .prepare("SELECT * FROM colors WHERE id = ?")
+      .get(result.lastInsertRowid);
+
+    // Add HATEOS Links
+    const colorWithLinks = {
+      ...newColor,
+      _links: {
+        self: { href: `/colors/${newColor.id}` },
+        collection: { href: "/colors" },
+      },
+    };
+
+    res.status(201).json(colorWithLinks);
   } catch (error) {
     next(error);
   }
