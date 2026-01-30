@@ -1,5 +1,6 @@
 import db from "../config/brandsDB.js";
 import { STATUS_CODES } from "node:http";
+import validateBrandData from "../helpers/validateBrandData.js";
 
 /** GET ALL BRANDS */
 export const getBrands = async (req, res, next) => {
@@ -27,6 +28,7 @@ export const getBrands = async (req, res, next) => {
   }
 };
 
+/** GET BRAND BY ID */
 export const getBrandById = async (req, res, next) => {
   const id = req.params.id;
 
@@ -51,6 +53,37 @@ export const getBrandById = async (req, res, next) => {
 
     // return the final data
     res.json(brand);
+  } catch (error) {
+    next(error);
+  }
+};
+
+/** CREATE BRAND */
+export const createBrand = async (req, res, next) => {
+  const { brand } = req.body;
+  const errors = validateBrandData({ brand });
+  if (errors.length > 0) return res.status(400).json({ errors });
+
+  try {
+    const query = "INSERT INTO brands (brand) VALUES (?)";
+    const result = db.prepare(query).run(brand);
+
+    const newBrand = db
+      .prepare("SELECT * FROM brands WHERE id = ?")
+      .get(result.lastInsertRowid);
+
+    //Add HATEOS Links
+    const brandWithLinks = {
+      ...newBrand,
+      _links: {
+        self: { href: `/brands/${newBrand.id}` },
+        collection: { href: "/brands" },
+      },
+    };
+
+    // return the final data
+    res.location(`/brands/${newBrand.id}`);
+    res.status(201).json(brandWithLinks);
   } catch (error) {
     next(error);
   }
