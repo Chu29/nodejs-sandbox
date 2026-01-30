@@ -88,3 +88,23 @@ export const createBrand = async (req, res, next) => {
     next(error);
   }
 };
+
+/** DELETE BRAND */
+export const deleteBrand = async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const query = db.prepare("DELETE * FROM brands WHERE id = ?");
+    const result = query.run(id);
+
+    if (result.changes === 0) {
+      let error = new Error(STATUS_CODES[404]);
+      error.status = 404;
+      throw error;
+    }
+
+    res.status(204).send("Item deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
