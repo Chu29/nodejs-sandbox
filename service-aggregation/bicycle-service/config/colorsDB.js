@@ -1,6 +1,6 @@
 import { DatabaseSync } from "node:sqlite";
 
-const db = new DatabaseSync(":memory:");
+const db = new DatabaseSync(`${import.meta.dirname}/colors.db`);
 
 db.exec(`
   CREATE TABLE colors (
@@ -9,8 +9,8 @@ db.exec(`
   ) STRICT
 `);
 
-db.exec(`
-  INSERT INTO colors (color) VALUES ('Yellow'), ('Red'), ('Orange'), ('Green'), ('Blue'), ('Indigo')
-  `);
+// db.exec(`
+//   INSERT OR IGNORE INTO colors (color) VALUES ('Yellow'), ('Red'), ('Orange'), ('Green'), ('Blue'), ('Indigo')
+//   `);
 
 export default db;
