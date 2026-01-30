@@ -89,6 +89,42 @@ export const createBrand = async (req, res, next) => {
   }
 };
 
+/** UPDATE BRAND */
+export const updateBrand = async (req, res, next) => {
+  const id = req.params.id;
+  const { brand } = req.body;
+  const errors = validateBrandData({ brand });
+  if (errors.length > 0) return res.status(400).json({ errors });
+
+  try {
+    const query = db.prepare("UPDATE brands SET brand = ? WHERE id = ?");
+    const result = query.run(brand.trim(), id);
+
+    if (result.changes === 0) {
+      let error = new Error(STATUS_CODES[404].message);
+      error.status = 404;
+      throw error;
+    }
+
+    const updatedBrand = db
+      .prepare("SELECT * FROM brands WHERE id = ?")
+      .get(id);
+
+    // Add HATEOS Links
+    const brandWithLinks = {
+      ...updatedBrand,
+      _links: {
+        self: { href: `/brands/${updatedBrand.id}` },
+        collection: { href: "/brands" },
+      },
+    };
+
+    res.json(brandWithLinks);
+  } catch (error) {
+    next(error);
+  }
+};
+
 /** DELETE BRAND */
 export const deleteBrand = async (req, res, next) => {
   const id = req.params.id;
@@ -98,7 +134,7 @@ export const deleteBrand = async (req, res, next) => {
     const result = query.run(id);
 
     if (result.changes === 0) {
-      let error = new Error(STATUS_CODES[404]);
+      let error = new Error(STATUS_CODES[404].message);
       error.status = 404;
       throw error;
     }
