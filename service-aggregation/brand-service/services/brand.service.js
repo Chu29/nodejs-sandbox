@@ -94,7 +94,7 @@ export const deleteBrand = async (req, res, next) => {
   const id = req.params.id;
 
   try {
-    const query = db.prepare("DELETE * FROM brands WHERE id = ?");
+    const query = db.prepare("DELETE FROM brands WHERE id = ?");
     const result = query.run(id);
 
     if (result.changes === 0) {
