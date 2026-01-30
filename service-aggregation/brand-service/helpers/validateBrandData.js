@@ -10,3 +10,5 @@ const validateBrandData = (data, isPartial = false) => {
 
   return errors;
 };
+
+export default validateBrandData;
