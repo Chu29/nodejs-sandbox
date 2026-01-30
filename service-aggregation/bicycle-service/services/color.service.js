@@ -1,4 +1,4 @@
-import db from "../config/db.js";
+import db from "../config/colorsDB.js";
 import { STATUS_CODES } from "node:http";
 import validateColorData from "../helpers/validateColorData.js";
 
@@ -51,7 +51,6 @@ export const getColorById = async (req, res, next) => {
         collection: { href: "/colors" },
       },
     };
-    console.log(color);
 
     // return the final data
     res.json(color);
