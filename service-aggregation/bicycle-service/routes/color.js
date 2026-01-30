@@ -1,5 +1,5 @@
 import { Router } from "express";
-import validateContentType from "../middleware/validateContentType.js";
+import validateContentType from "../../middleware/validateContentType.mjs";
 import {
   createColor,
   deleteColor,
