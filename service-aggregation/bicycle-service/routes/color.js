@@ -2,6 +2,7 @@ import { Router } from "express";
 import validateContentType from "../middleware/validateContentType.js";
 import {
   createColor,
+  deleteColor,
   getColorById,
   getColors,
   updateColor,
@@ -15,5 +16,6 @@ router.get("/", getColors);
 router.get("/:id", getColorById);
 router.post("/", createColor);
 router.put("/:id", updateColor);
+router.delete("/:id", deleteColor);
 
 export default router;
