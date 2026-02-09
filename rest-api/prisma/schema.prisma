@@ -12,3 +12,16 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+// Define the users table
+
+model Users {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+
+  createdAt DateTime @default(now())
+}
+
+// Users -> Movies -> WatchList
