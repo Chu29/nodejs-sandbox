@@ -7,6 +7,7 @@ const { BICYCLE_SERVICE_PORT = 4040, BRAND_SERVICE_PORT = 5050 } = process.env;
 const bicycleService = `http://localhost:${BICYCLE_SERVICE_PORT}`;
 const brandService = `http://localhost:${BRAND_SERVICE_PORT}`;
 
+/** GET bicycle by ID */
 router.get("/:id", async (req, res, next) => {
   const { id } = req.params;
 
@@ -36,6 +37,7 @@ router.get("/:id", async (req, res, next) => {
   brandProm.catch(noop);
 
   const results = await Promise.allSettled([bicycleProm, brandProm]);
+  console.log(results);
 
   for (const { reason } of results) {
     if (reason) console.log(reason);
@@ -44,7 +46,6 @@ router.get("/:id", async (req, res, next) => {
   const [bicycle, brand] = results.map(({ value }) => value);
 
   if (bicycle && brand) {
-    res.setHeader("Content-Type", "application/json");
     res.send({ id: bicycle.id, color: bicycle.color, brand: brand.brand });
   }
 });
