@@ -14,7 +14,6 @@ datasource db {
 }
 
 // Define the users table
-
 model Users {
   id String @id @default(uuid())
   name String
@@ -22,6 +21,47 @@ model Users {
   password String
 
   createdAt DateTime @default(now())
+
+  watchlistItems WatchlistItems[]
+  movies Movies[]
+}
+
+// Define the movies table
+model Movies {
+  id String @id @default(uuid())
+  title String
+  overview String?
+  releaseYear Int
+  genres String[] @default([])
+  runtime Int?
+  posterUrl String?
+  createdBy String
+  createdAt DateTime @default(now())
+
+  creator Users @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+  watchlistItems WatchlistItems[]
+}
+
+// Define the watchlists table
+model WatchlistItems {
+  id String @id @default(uuid())
+  userId String
+  movieId String
+  status WatchlistStatus @default(PLANNED)
+  rating Int?
+  notes String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  // Relations
+  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  movie Movies @relation(fields: [movieId], references: [id], onDelete: Cascade)
+}
+enum WatchlistStatus {
+  PLANNED
+  WATCHING
+  COMPLETED
+  DROPPED
 }
 
 // Users -> Movies -> WatchList
