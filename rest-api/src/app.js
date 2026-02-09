@@ -2,15 +2,20 @@ import express from "express";
 import { config } from "dotenv";
 import { connectDB, disconnectDB } from "./src/db.js";
 
-import movieRouter from "./routes/movieRoutes.js";
+// Import Routes
+import authRouter from "./modules/auth/auth.routes.js";
 
 config();
 connectDB();
 
 const app = express(); // Initialize Express application
 
-// Register movieRouter
-app.use("/movies", movieRouter);
+// Body parsing middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// API Routes
+app.use("/auth", authRouter);
 
 const PORT = process.env.PORT || 3000;
 
