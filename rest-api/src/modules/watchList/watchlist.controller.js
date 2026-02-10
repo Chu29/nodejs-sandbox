@@ -1,4 +1,4 @@
-import { prisma } from "../../src/db.js";
+import { prisma } from "../../config/db.js";
 
 const addToWatchList = async (req, res) => {
   const { movieId, userId, notes, rating, status } = req.body;
