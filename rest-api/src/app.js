@@ -4,6 +4,7 @@ import { connectDB, disconnectDB } from "./src/db.js";
 
 // Import Routes
 import authRouter from "./modules/auth/auth.routes.js";
+import watchlistRouter from "./modules/watchList/watchlist.routes.js";
 
 config();
 connectDB();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // API Routes
 app.use("/auth", authRouter);
+app.use("/watchlist", watchlistRouter);
 
 const PORT = process.env.PORT || 3000;
 
