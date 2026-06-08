@@ -3,7 +3,7 @@
  * This file is the entry point of our application
  */
 "use strict";
-const app = require("../app");
+const app = require("../../../express-web-server/app");
 const http = require("node:http");
 
 const PORT = process.env.PORT || 3000;
